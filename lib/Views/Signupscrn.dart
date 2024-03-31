@@ -11,6 +11,7 @@ import 'package:rickshare/Views/Loginscrn.dart';
 import 'package:rickshare/Views/OTPScreen.dart';
 import 'package:rickshare/rick_share_icons.dart';
 import 'package:rickshare/variables.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Signupscrn extends StatefulWidget {
   const Signupscrn({super.key});
@@ -26,11 +27,13 @@ class _SignupscrnState extends State<Signupscrn> {
   String errorMessagepass = '';
   String port = ip;
 
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController numberController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   void checkEmail() {
     String email = emailController.text.trim();
     if (email.isEmpty) {
@@ -56,7 +59,7 @@ class _SignupscrnState extends State<Signupscrn> {
     String password = passwordController.text.trim();
     if (password.isEmpty) {
       setState(() {
-        errorMessagepass = 'Please enter an password.';
+        errorMessagepass = 'Please enter a password.';
         flag = true;
       });
     } else {
@@ -66,57 +69,25 @@ class _SignupscrnState extends State<Signupscrn> {
 
   Future<void> signUp(String firstName, String lastName, String email,
       String password, String number) async {
-    final url = "$port/register";
     try {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return const Dialog(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text("Logging in..."),
-                ],
-              ),
-            ),
-          );
-        },
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+        
       );
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          "firstName": firstName,
-          "lastName": lastName,
-          "email": email.toLowerCase(),
-          "password": password,
-          "number": number,
-        }),
+
+      
+      // User is successfully signed up
+      // Proceed with further actions such as sending verification email or navigating to OTP screen
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => OTPScreen(email: email),
+        ),
       );
-      if (response.statusCode == 200) {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => OTPScreen(email: email),
-          ),
-        );
-        print("User Registered");
-      } else {
-        Navigator.pop(context);
-        print("User not Registered");
-      }
     } catch (e) {
       print('Error: $e');
-      Navigator.pop(context);
-
       Fluttertoast.showToast(
         msg: 'An error occurred',
         toastLength: Toast.LENGTH_SHORT,

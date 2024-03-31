@@ -12,7 +12,6 @@ import 'package:rickshare/Views/Reportpage.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:rickshare/rick_share_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:rickshare/variables.dart';
 
 class chatBoxscrn extends StatefulWidget {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "859378346519",
+    "project_id": "rickshare-2c34e",
+    "storage_bucket": "rickshare-2c34e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859378346519:android:e059fd2360251475850a52",
+        "android_client_info": {
+          "package_name": "com.example.rickshare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKkx-Ybudg_YuBMUO7j0RaNBq6PXVeMR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -14,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:rickshare/Views/loadingscreen1.dart';
 import 'package:rickshare/rick_share_icons.dart';
 import 'package:rickshare/variables.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rickshare/auth.dart';
 
 class Loginscrn extends StatefulWidget {
   const Loginscrn({super.key});
@@ -23,57 +25,47 @@ class Loginscrn extends StatefulWidget {
 }
 
 class _LoginscrnState extends State<Loginscrn> {
-  String port = ip;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   bool obscure_Text = true;
-  Future<void> login(String email, String password) async {
-    final url = "$port/login";
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode({
-        "email": email.toLowerCase(),
-        "password": password,
-      }),
-    );
 
-    if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
-      final String token = responseData["access_token"];
-      final isBan = responseData["isBan"];
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isBan', isBan);
-      await prefs.setString('token', token);
-      print(token);
-      Navigator.pop(context);
+  Future<void> _login() async {
+    try {
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(
+              email: _emailController.text,
+              password: _passwordController.text);
+
+      // User is successfully logged in
+      // Navigate to HomeScreen or perform any other action
+
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => const Homescrn(),
         ),
       );
-    } else if (response.statusCode == 401) {
-      Fluttertoast.showToast(
-        msg: 'Incorrect password',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    } else {
-      Fluttertoast.showToast(
-        msg: 'Enter credentials',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(
+          msg: 'No user found for that email.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(
+          msg: 'Wrong password provided for that user.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
     }
   }
-
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +121,7 @@ class _LoginscrnState extends State<Loginscrn> {
                 ),
               ),
               TextField(
-                controller: emailController,
+                controller: _emailController,
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 18,
@@ -178,7 +170,7 @@ class _LoginscrnState extends State<Loginscrn> {
                 ),
               ),
               TextField(
-                controller: passwordController,
+                controller: _passwordController,
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 18,
@@ -235,7 +227,7 @@ class _LoginscrnState extends State<Loginscrn> {
             width: MediaQuery.of(context).size.width,
             child: ElevatedButton(
                 onPressed: () async {
-                  await login(emailController.text, passwordController.text);
+                  _login();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
