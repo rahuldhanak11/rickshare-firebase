@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, library_prefixes, camel_case_types, avoid_print, use_key_in_widget_constructors, library_private_types_in_public_api, use_super_parameters, file_names
+// ignore_for_file: unused_import, library_prefixes, camel_case_types, avoid_print, use_key_in_widget_constructors, library_private_types_in_public_api, use_super_parameters, file_names, unused_field
 
 import 'dart:async';
 import 'dart:convert';
@@ -26,7 +26,6 @@ class chatBoxscrn extends StatefulWidget {
 }
 
 class _chatBoxscrnState extends State<chatBoxscrn> {
-  late IO.Socket socket;
   String port = ip;
   String? token;
   String? cusername;
@@ -37,107 +36,107 @@ class _chatBoxscrnState extends State<chatBoxscrn> {
   final List<String> _users = [];
   final ScrollController scrollController = ScrollController();
 
-  Future<void> fetchUsername() async {
-    await fetchToken();
-    print(token);
-    if (token != null) {
-      final response = await http.get(
-        Uri.parse('$port/username'),
-        headers: {"Authorization": "Bearer $token"},
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        setState(() {
-          cusername = data["username"];
-        });
-      } else {
-        // Handle error
-      }
-    }
-  }
+  // Future<void> fetchUsername() async {
+  //   await fetchToken();
+  //   print(token);
+  //   if (token != null) {
+  //     final response = await http.get(
+  //       Uri.parse('$port/username'),
+  //       headers: {"Authorization": "Bearer $token"},
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final data = jsonDecode(response.body);
+  //       setState(() {
+  //         cusername = data["username"];
+  //       });
+  //     } else {
+  //       // Handle error
+  //     }
+  //   }
+  // }
 
-  void _sendMessage() {
-    String message = _messageController.text.trim();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      scrollController.jumpTo(scrollController.position.maxScrollExtent);
-    });
-    if (message.isNotEmpty) {
-      socket.emit('message', {'message': message});
-      _messageController.clear();
-    }
-  }
+  // void _sendMessage() {
+  //   String message = _messageController.text.trim();
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     scrollController.jumpTo(scrollController.position.maxScrollExtent);
+  //   });
+  //   if (message.isNotEmpty) {
+  //     socket.emit('message', {'message': message});
+  //     _messageController.clear();
+  //   }
+  // }
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    fetchToken().then((_) {
-      fetchUsername();
-      if (token != null) {
-        socket = IO.io(
-          '$port/chat',
-          <String, dynamic>{
-            'transports': ['websocket'],
-            'autoConnect': false,
-            'auth': {
-              'token': token,
-              'src': widget.source,
-              'destn': widget.destination
-            },
-          },
-        );
+  //   fetchToken().then((_) {
+  //     fetchUsername();
+  //     if (token != null) {
+  //       socket = IO.io(
+  //         '$port/chat',
+  //         <String, dynamic>{
+  //           'transports': ['websocket'],
+  //           'autoConnect': false,
+  //           'auth': {
+  //             'token': token,
+  //             'src': widget.source,
+  //             'destn': widget.destination
+  //           },
+  //         },
+  //       );
 
-        socket.connect();
-        socket.on('connect', (_) {
-          print('Connected');
-        });
+  //       socket.connect();
+  //       socket.on('connect', (_) {
+  //         print('Connected');
+  //       });
 
-        socket.on('user_joined', (data) {
-          var username = data['username'];
+  //       socket.on('user_joined', (data) {
+  //         var username = data['username'];
 
-          setState(() {
-            _users.add("$username joined room");
-            Fluttertoast.showToast(msg: "$username joined room");
-          });
-        });
+  //         setState(() {
+  //           _users.add("$username joined room");
+  //           Fluttertoast.showToast(msg: "$username joined room");
+  //         });
+  //       });
 
-        socket.on('user_left', (data) {
-          var username = data['username'];
-          setState(() {
-            _users.add("$username left room");
-            Fluttertoast.showToast(msg: "$username left room");
-          });
-        });
+  //       socket.on('user_left', (data) {
+  //         var username = data['username'];
+  //         setState(() {
+  //           _users.add("$username left room");
+  //           Fluttertoast.showToast(msg: "$username left room");
+  //         });
+  //       });
 
-        socket.on('message', (data) {
-          print('Received: $data');
-          print(cusername);
-          print(data);
-          setState(() {
-            _messages.add("${data['username']}: ${data['message']}");
-          });
-        });
+  //       socket.on('message', (data) {
+  //         print('Received: $data');
+  //         print(cusername);
+  //         print(data);
+  //         setState(() {
+  //           _messages.add("${data['username']}: ${data['message']}");
+  //         });
+  //       });
 
-        socket.on('disconnect', (_) {
-          print('Disconnected');
-        });
-      }
-    });
-  }
+  //       socket.on('disconnect', (_) {
+  //         print('Disconnected');
+  //       });
+  //     }
+  //   });
+  // }
 
-  @override
-  void dispose() {
-    socket.disconnect();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   socket.disconnect();
+  //   super.dispose();
+  // }
 
-  Future<void> fetchToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? storedToken = prefs.getString('token');
-    setState(() {
-      token = storedToken;
-    });
-  }
+  // Future<void> fetchToken() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final String? storedToken = prefs.getString('token');
+  //   setState(() {
+  //     token = storedToken;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +247,7 @@ class _chatBoxscrnState extends State<chatBoxscrn> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Reportscrn()));
+                                    builder: (context) =>const Reportscrn()));
                           },
                           value: 'report',
                           child: const ListTile(
