@@ -15,7 +15,7 @@ import 'package:rickshare/Views/Profile.dart';
 import 'package:rickshare/Views/Welcomescrn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rickshare/variables.dart';
 
@@ -31,7 +31,7 @@ class _HomescrnState extends State<Homescrn> {
   String? selectedvalue2 = "kjsit";
   String port = ip;
   bool? isBan;
-  final AudioPlayer _audioplayer = AudioPlayer();
+  // final AudioPlayer _audioplayer = AudioPlayer();
 
   String get source {
     if (selectedvalue1 == "sion" && selectedvalue2 == "kjsit") {
@@ -380,14 +380,14 @@ class _HomescrnState extends State<Homescrn> {
                           );
                         } else {
                           Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (context) => chatBoxscrn(
-      source: source,
-      destination: destination,
-    ),
-  ),
-);
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => chatBoxscrn(
+                                source: source,
+                                destination: destination,
+                              ),
+                            ),
+                          );
                         }
                       }
                     },

@@ -33,6 +33,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+<<<<<<< Updated upstream
   audioplayers:
     dependency: "direct main"
     description:
@@ -98,6 +99,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.4"
+=======
+>>>>>>> Stashed changes
   boolean_selector:
     dependency: transitive
     description:
@@ -718,6 +721,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+<<<<<<< Updated upstream
   uuid:
     dependency: transitive
     description:
@@ -726,6 +730,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.3.3"
+=======
+>>>>>>> Stashed changes
   vector_graphics:
     dependency: transitive
     description:
