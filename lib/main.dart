@@ -14,9 +14,11 @@ import 'package:rickshare/Views/Splashscrn.dart';
 import 'package:rickshare/Views/Welcomescrn.dart';
 import 'package:rickshare/Views/Signupscrn.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:rickshare/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
