@@ -425,7 +425,7 @@ class _chatBoxscrnState extends State<chatBoxscrn> {
                     borderRadius: BorderRadius.circular(50),
                     child: FloatingActionButton(
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      onPressed: _sendMessage,
+                      onPressed: (){},
                       tooltip: 'Send',
                       child: const Icon(
                         Icons.arrow_upward_rounded,

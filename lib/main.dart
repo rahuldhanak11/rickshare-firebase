@@ -13,6 +13,8 @@ import 'package:rickshare/Views/Reportpage.dart';
 import 'package:rickshare/Views/Splashscrn.dart';
 import 'package:rickshare/Views/Welcomescrn.dart';
 import 'package:rickshare/Views/Signupscrn.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() {
   runApp(const MyApp());
