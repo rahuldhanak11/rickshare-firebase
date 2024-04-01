@@ -351,7 +351,7 @@ class _HomescrnState extends State<Homescrn> {
                   ),
                   child: IconButton(
                     onPressed: () {
-                      _audioplayer.play('assets/ding.mp3', isLocal: true);
+                      // _audioplayer.play('assets/ding.mp3', isLocal: true);
                       if (isBan == true) {
                         showDialog(
                           context: context,
